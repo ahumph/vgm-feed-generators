@@ -22,7 +22,7 @@ export class FirehoseSubscription extends FirehoseSubscriptionBase {
     const postsToCreate = ops.posts.creates
       .filter((create) => {
         let labels = create.record.labels as ComAtprotoLabelDefs.SelfLabels
-        return Array.isArray(labels) && labels.includes('composer')
+        return Array.isArray(labels) && labels.some((label) => label === 'composer')
       })
       .map((create) => {
         // map composer-related posts to a db row
