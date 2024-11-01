@@ -1,3 +1,4 @@
+import { ComAtprotoLabelDefs } from '@atproto/api'
 import {
   OutputSchema as RepoEvent,
   isCommit,
@@ -20,9 +21,8 @@ export class FirehoseSubscription extends FirehoseSubscriptionBase {
     const postsToDelete = ops.posts.deletes.map((del) => del.uri)
     const postsToCreate = ops.posts.creates
       .filter((create) => {
-        let labels = create.record.labels as unknown as string[]
-        if (labels) return labels.includes('composer')
-        return false
+        let labels = create.record.labels as ComAtprotoLabelDefs.SelfLabels
+        return Array.isArray(labels) && labels.includes('composer')
       })
       .map((create) => {
         // map composer-related posts to a db row
