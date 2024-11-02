@@ -17,6 +17,8 @@ const run = async () => {
       maybeStr(process.env.FEEDGEN_PUBLISHER_DID) ?? 'did:example:alice',
     subscriptionReconnectDelay:
       maybeInt(process.env.FEEDGEN_SUBSCRIPTION_RECONNECT_DELAY) ?? 3000,
+    labelerService:
+      maybeStr(process.env.FEEDGEN_LABELER_SERVICE) ?? 'did:example:labeler',
     hostname,
     serviceDid,
   })

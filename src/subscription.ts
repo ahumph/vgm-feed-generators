@@ -15,14 +15,15 @@ export class FirehoseSubscription extends FirehoseSubscriptionBase {
     // Just for fun :)
     // Delete before actually using
     // for (const post of ops.posts.creates) {
-    //   console.log(post.record.text)
+    //   console.log(post.record)
     // }
 
     const postsToDelete = ops.posts.deletes.map((del) => del.uri)
     const postsToCreate = ops.posts.creates
       .filter((create) => {
-        let labels = create.record.labels as ComAtprotoLabelDefs.SelfLabels
-        return Array.isArray(labels) && labels.values.some((label) => label.val === 'game-audio')
+        // let labels = create.record.labels as ComAtprotoLabelDefs.SelfLabels
+        // return Array.isArray(labels) && labels.values.some((label) => label.val === '!no-unauthenticated')
+        return create.record.text.includes('🎮') && create.record.text.includes('🎧')
       })
       .map((create) => {
         // map composer-related posts to a db row
@@ -40,6 +41,7 @@ export class FirehoseSubscription extends FirehoseSubscriptionBase {
         .execute()
     }
     if (postsToCreate.length > 0) {
+      console.log(...postsToCreate)
       await this.db
         .insertInto('post')
         .values(postsToCreate)
